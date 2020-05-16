@@ -53,7 +53,7 @@ public:
     AVLTree() : root(nullptr) {}
 
     void remove(T value) override {
-        Doremi(root, value);
+        root = Doremi(root, value);
     }
 
     bool exists(T key) override {
@@ -86,7 +86,7 @@ public:
 
     ~AVLTree()
     {
-        delete root;
+        _delete(root);
     }
 
 private:
@@ -108,8 +108,8 @@ private:
     }
 
     int _balance(const Node<T> *pNode) {
-        return pNode ? (pNode->l ? pNode->l->h : 0) - (pNode->r ? pNode->r->h : 0) : 0;
-    }
+		return pNode ? (pNode->l ? pNode->l->h + 1 : 0) - (pNode->r ? pNode->r->h + 1 : 0) : 0;    
+	}
 
     Node<T> *_l_rotation(Node<T> *pNode) {
         Node<T> *tmpNode = pNode->r;
@@ -168,7 +168,7 @@ private:
         }
         else {
             //Already existed
-            return nullptr;
+            return pNode;
         }
         pNode->h = max(_height(pNode->l), _height(pNode->r)) + 1;
         return pNode;
